@@ -1,0 +1,21 @@
+{
+  "name": "FoodStreams",
+  "version": "1.0.0",
+  "description": "Restaurant Display System for small dine-in restaurants",
+  "main": "index.js",
+  "repository": "https://github.com/calvincchong/FoodStreams.git",
+  "author": "Calvin C. Chong",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router": "^6.6.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.12",
+    "@babel/preset-env": "^7.20.2",
+    "@babel/preset-react": "^7.18.6",
+    "webpack-dev-server": "^4.11.1"
+  }
+}
