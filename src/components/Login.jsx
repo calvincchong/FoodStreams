@@ -8,13 +8,18 @@ const Login = ({props}) => {
   const [username, setUserName] = useState('');
   const navigate = useNavigate();
 
-
+  const handleLoginClick = (e) => {
+    e.preventDefault();
+    localStorage.setItem('userId', username);
+    setUsername('');
+    navigate('/board')
+  };
 
   return (
     <div>
       <p className="login_container text-2xl font-bold underline">Login Component </p>
       <p className="text-xl"> Login component is displayed at url '/';</p>
-      <form className="login_form">
+      <form className="login_form" onSubmit={handleLoginClick}>
         <label> Please enter your username </label>
         <input
            type='text'
