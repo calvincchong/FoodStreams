@@ -7,17 +7,20 @@
   "author": "Calvin C. Chong",
   "license": "MIT",
   "private": false,
+  "type": "module",
   "scripts": {
     "start": "webpack --mode=development",
     "build": "webpack --mode=production",
-    "dev": "webpack serve --open"
+    "dev": "webpack serve --open",
+    "startserverd": "nodemon server/index.js"
   },
   "dependencies": {
     "axios": "^1.2.2",
+    "nodemon": "^2.0.20",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router": "^6.6.2",
-    "socket-io": "^1.0.0",
+    "socket.io": "^4.5.4",
     "socket.io-client": "^4.5.4",
     "style-loader": "^3.3.1"
   },
