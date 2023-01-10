@@ -25,14 +25,20 @@ const Board = ({props}) => {
   }, []);
 
   return (
-    <div className="board-main-content">
+    <div className="board-main-content flex flex-col">
       <div className="board-header">This is on top</div>
+      <h2> Order Board</h2>
+      <div>It is {isConnected} that we are connected.</div>
       <div className="board-canvas flex flex-row">
-        <h2> Order Board</h2>
-        It is {isConnected} that we are connected.
-        <div className="ko-list listwrapper basis-1/3"><h2>Queue</h2></div>
-        <div className="ko-list listwrapper basis-1/3"><h2>Working On</h2></div>
-        <div className="ko-list listwrapper basis-1/3"><h2>Completed</h2></div>
+        <div className="ko-list listwrapper flex-col basis-1/3">
+          <h2>Queue</h2>
+        </div>
+        <div className="ko-list listwrapper flex-col basis-1/3">
+          <h2>Working On</h2>
+        </div>
+        <div className="ko-list listwrapper flex-col basis-1/3">
+          <h2>Completed</h2>
+        </div>
       </div>
     </div>
   );
