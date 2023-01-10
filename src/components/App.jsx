@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import io from 'socket.io-client';
 import axios from 'axios';
 import Board from './Board.jsx';
@@ -9,11 +10,13 @@ import Board from './Board.jsx';
 const App = ({props}) => {
 
   return (
-    <div>
-      <h1> Restaurant Orders</h1>
-      HTML SHOWING that we are connected.
-      <Board />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Login />} />
+        <Route path='board' element={<Board />} />
+        <Route path='Notifications' element={<Notifications />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
