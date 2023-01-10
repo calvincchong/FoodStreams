@@ -8,6 +8,24 @@ import axios from 'axios';
 const App = ({props}) => {
   const [isConnected, setIsConnected] = useState(false);
 
+  useEffect(() => {
+    const socket = io('http://localhost:9000'); // url of the server is used to create socket
+    // when connected
+    socket.on('connect', (res) => {
+      setIsConnected('true');
+    });
+
+    socket.on('time', (time) => {
+      setIsConnected(time);
+    });
+
+    // use await to fetch dots
+
+    socket.on('disconnect', () => {
+      setIsConnected('Disconnected from Server');
+    });
+  }, []);
+
   return (
     <div>
       <h1> Restaurant Orders</h1>
