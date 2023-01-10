@@ -680,6 +680,7 @@ module.exports = {
       fit: 'fit-content',
       '3/4': '75vh',
       '6/10': '60vh',
+      '4/10': '40vh',
       '1/10': '10vh'
     },
     minWidth: {
