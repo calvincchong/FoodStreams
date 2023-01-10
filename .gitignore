@@ -5,4 +5,7 @@ yarn-error.log
 node_modules
 
 ## webpack bundle files
-public/bundle.js
+public/bundle.js'
+
+# Additional files created when Tailwind builds the CSS styling for the application
+public/output.css
