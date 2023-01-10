@@ -1,9 +1,11 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import io from 'socket.io-client';
 import axios from 'axios';
 import Board from './Board.jsx';
+import Login from './Login.jsx';
+import Notifications from './Notifications.jsx';
 
 // components
 
