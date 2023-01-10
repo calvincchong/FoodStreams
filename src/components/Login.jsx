@@ -11,7 +11,7 @@ const Login = ({props}) => {
   const handleLoginClick = (e) => {
     e.preventDefault();
     localStorage.setItem('userId', username);
-    setUsername('');
+    setUserName('');
     navigate('/board')
   };
 
@@ -19,18 +19,21 @@ const Login = ({props}) => {
     <div>
       <p className="login_container text-2xl font-bold underline">Login Component </p>
       <p className="text-xl"> Login component is displayed at url '/';</p>
-      <form className="login_form" onSubmit={handleLoginClick}>
-        <label> Please enter your username </label>
-        <input
-           type='text'
-           name='username'
-           id='username'
-           required
-           onChange={e => setUserName(e.target.value)}
-           value={username}
-        />
-        <button>Sign In</button>
-      </form>
+      <div className='fixed flex z-30 flex-col items-center space-x-2 justify-center bg-black/30 w-full h-full left-0 top-0 text-neutral-800'>
+        <form className="login_form flex-initial w-10/12 sm:w-6/12 bg-slate-100 py-3 my-4 rounded-xl
+                        shadow-md relative overflow-auto max-h-full min-h-1/10" onSubmit={handleLoginClick}>
+          <label> Please enter your username </label>
+          <input
+            type='text'
+            name='username'
+            id='username'
+            required
+            onChange={e => setUserName(e.target.value)}
+            value={username}
+          />
+          <button>Sign In</button>
+        </form>
+      </div>
     </div>
   );
 }
