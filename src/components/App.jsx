@@ -16,7 +16,7 @@ const App = ({props}) => {
       <Routes>
         <Route path='/' element={<Login />} />
         <Route path='board' element={<Board />} />
-        <Route path='Notifications' element={<Notifications />} />
+        <Route path='notifications' element={<Notifications />} />
       </Routes>
     </BrowserRouter>
   );
