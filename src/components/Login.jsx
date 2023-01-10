@@ -7,10 +7,12 @@ const Login = ({props}) => {
 
   return (
     <div>
-      <h2>Login Component </h2>
-      Login component is displayed at url '/';
+      <p className="text-2xl font-bold underline">Login Component </p>
+      <p className="text-xl"> Login component is displayed at url '/';</p>
       A centered form belongs here.
-      TODO: Determine how quickly I can set up login or not login
+      TODO: Determine how quickly I can set up login or not login yes
+      Live testing currently works:
+      Some issue with the task breakdown
     </div>
   );
 }
