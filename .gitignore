@@ -1,2 +1,8 @@
+## Logs of any yarn add errors
 yarn-error.log
+
+## Modules from install Node
 node_modules
+
+## webpack bundle files
+public/bundle.js

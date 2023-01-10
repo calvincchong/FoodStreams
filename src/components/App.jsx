@@ -1,38 +1,25 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import io from 'socket.io-client';
 import axios from 'axios';
+import Board from './Board.jsx';
+import Login from './Login.jsx';
+import Notifications from './Notifications.jsx';
 
 // components
 
 const App = ({props}) => {
-  const [isConnected, setIsConnected] = useState(false);
-
-  useEffect(() => {
-    const socket = io('http://localhost:9000'); // url of the server is used to create socket
-    // when connected
-    socket.on('connect', (res) => {
-      setIsConnected('true');
-    });
-
-    socket.on('time', (time) => {
-      setIsConnected(time);
-    });
-
-    // use await to fetch dots
-
-    socket.on('disconnect', () => {
-      setIsConnected('Disconnected from Server');
-    });
-  }, []);
 
   return (
-    <div>
-      <h1> Restaurant Orders</h1>
-      It is {isConnected} that we are connected.
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Login />} />
+        <Route path='board' element={<Board />} />
+        <Route path='Notifications' element={<Notifications />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
 export default App;
-
