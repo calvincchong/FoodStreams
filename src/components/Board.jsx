@@ -1,10 +1,13 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 import axios from 'axios';
+import initialData from '../../fixtures/Orders.js';
+import Column from './Column.jsx';
 
 const Board = ({props}) => {
   const [isConnected, setIsConnected] = useState(false);
+  const state = initialData;
 
   useEffect(() => {
     const socket = io('http://localhost:9000'); // url of the server is used to create socket
@@ -32,7 +35,24 @@ const Board = ({props}) => {
 
       <div className="board-canvas flex flex-row min-h-8/10">
 
-        <div className='pending-wrapper basis-1/3'>
+        {state.columnOrder.map((columnId) => {
+          const column = state.columns[columnId];
+          const orders = column.orderIds.map(taskId => state.orders[taskId]);
+
+          return <Column className='' key={column.id} column={column} orders={orders} />
+        })};
+
+      </div>
+
+    </div>
+  );
+}
+
+export default Board;
+
+
+/**
+ * <div className='pending-wrapper basis-1/3'>
           <h3>Pending</h3>
           <div className='ko-list flex-col  min-h-8/10'>
             <div className='listWrapper'>
@@ -41,7 +61,7 @@ const Board = ({props}) => {
         </div>
 
         <div className='working-wrapper flex-col min-h-8/10 basis-1/3'>
-          <h2>Working On</h2>
+          <h2 className='3xl'>Working On</h2>
           <div className="working-card-container border-2  border-sky-500 min-h-full">
             <div className="working-cards  min-h-full">
               TEST CONTENT
@@ -52,15 +72,8 @@ const Board = ({props}) => {
         <div className='working-wrapper basis-1/3'>
           <div className="ko-list flex-col basis-1/3 min-h-8/10">
             <div className="listWrapper border ">
-              <h2>Completed</h2>
-            </div>
+`              <h2>Completed</h2>
+`            </div>
           </div>
         </div>
-
-      </div>
-
-    </div>
-  );
-}
-
-export default Board;
+ */

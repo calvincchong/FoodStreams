@@ -646,8 +646,11 @@ module.exports = {
       min: 'min-content',
       max: 'max-content',
       fit: 'fit-content',
+      '2/10': '20vh',
       '1/12': '8.333333%',
-      '3/12': '25%'
+      '3/12': '25%',
+      '8/10': '80vh',
+      'sm': '24rem'
     }),
     maxWidth: ({ theme, breakpoints }) => ({
       none: 'none',
@@ -680,6 +683,7 @@ module.exports = {
       fit: 'fit-content',
       '3/4': '75vh',
       '6/10': '60vh',
+      '8/10': '80vh',
       '4/10': '40vh',
       '1/10': '10vh'
     },
@@ -689,7 +693,8 @@ module.exports = {
       min: 'min-content',
       max: 'max-content',
       fit: 'fit-content',
-      900: '900px'
+      900: '900px',
+      200: '200px'
     },
     objectPosition: {
       bottom: 'bottom',
