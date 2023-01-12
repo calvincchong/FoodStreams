@@ -52,31 +52,66 @@ const Board = ({props}) => {
     // look up the column within this state by looking at
     // looking up with the droppableID (which we have set to be the same as state)
 
-    const column = data.columns[source.droppableId];
-    console.log('finding the column in the data', column);
-    const newOrderIds = Array.from(column.orderIds);
-    console.log('this is new OrderIds from new array using array From', newOrderIds);
-    newOrderIds.splice(source.index, 1);
-    console.log('after splice', newOrderIds);
-    newOrderIds.splice(destination.index, 0, draggableId);
+    const start = data.columns[source.droppableId];
+    const end = data.columns[destination.droppableId]; // store reference to column that we finish in.
+    // if start column and finish column are the same then we con continue to use the same logic that we used before.
+      // console.log('finding the column in the data', column);
 
-    console.log('this is new orderIds after slicing', newOrderIds)
-    const newColumn = {
-      ...column,
-      orderIds: newOrderIds
-    };
+    if (start === end) {
+      const newOrderIds = Array.from(start.orderIds);
+        // console.log('this is new OrderIds from new array using array From', newOrderIds);
+      newOrderIds.splice(source.index, 1);
+        // console.log('after splice', newOrderIds);
+      newOrderIds.splice(destination.index, 0, draggableId);
 
-    const newState = {
+        // console.log('this is new orderIds after slicing', newOrderIds)
+      const newColumn = {
+        ...start,
+        orderIds: newOrderIds
+      };
+
+      const newState = {
+        ...data,
+        columns: {
+          ...data.columns,
+          [newColumn.id]: newColumn
+        }
+      };
+
+      console.log('this is the new State', newState);
+
+      setData(newState);
+      return;
+    }
+
+    const startOrderIds = Array.from(start.orderIds);
+    startOrderIds.splice(source.index, 1) // remove draggedstartId from array
+    const newStart = {
+      ...start,
+      orderIds: startOrderIds
+    }
+
+    const endOrderIds = Array.from(end.orderIds);
+    endOrderIds.splice(destination.index, 0, draggableId);
+    const newEnd = {
+      ...end,
+      orderIds: endOrderIds
+    }
+
+    const newDataState = {
       ...data,
       columns: {
         ...data.columns,
-        [newColumn.id]: newColumn
+        [newStart.id]: newStart,
+        [newEnd.id]: newEnd
       }
-    };
+    }
 
-    console.log('this is the new State', newState);
+    console.log('this is the new state', newDataState);
 
-    setData(newState);
+    setData(newDataState);
+    return;
+
   };
 
   return (

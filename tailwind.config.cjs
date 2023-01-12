@@ -694,7 +694,9 @@ module.exports = {
       max: 'max-content',
       fit: 'fit-content',
       900: '900px',
-      200: '200px'
+      300: '300px',
+      200: '200px',
+      400: '400px'
     },
     objectPosition: {
       bottom: 'bottom',
