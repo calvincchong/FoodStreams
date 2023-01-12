@@ -14,8 +14,8 @@ const App = ({props}) => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Login />} />
-        <Route path='board' element={<Board />} />
+        <Route path='/' element={<Board />} />
+        <Route path='board' element={<Login />} />
         <Route path='notifications' element={<Notifications />} />
       </Routes>
     </BrowserRouter>

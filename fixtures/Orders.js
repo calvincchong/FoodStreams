@@ -29,7 +29,7 @@ const initialData = {
     },
     'order-5': {
       id: 'order-5',
-      name: 'THIS IS JUST A STRING, order-4 chickeny',
+      name: 'THIS IS JUST A STRING, order-5 chickeny',
       items: [
         'sprite', 'chicken', 'chocolate'
       ]
@@ -39,7 +39,7 @@ const initialData = {
     'column-1': {
       id: 'column-1',
       title: 'To Do',
-      orderIds: ['order-1', 'order-2', 'order-3', 'order-4']
+      orderIds: ['order-1', 'order-2', 'order-4', 'order-5']
     },
     'column-2': {
       id: 'column-2',
@@ -49,7 +49,7 @@ const initialData = {
     'column-3': {
       id: 'column-3',
       title: 'column-3',
-      orderIds: ['order-5']
+      orderIds: []
     }
   },
   // this is where the data for how to organize the orders will be held.
