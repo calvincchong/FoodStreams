@@ -25,17 +25,17 @@ const Order = ({k, order, index}) => {
     <div>
     <Draggable key={index} draggableId={order.id} index={index}>
       {(provided, snapshot) => (
-        <div key={index} className='mx-3 my-3 border border-gray-500 border-sky-500 min-h-1/10 max-h-20 overflow-y-auto bg-white shadow-lg'
+        <div key={index} className='mx-3 my-3 border border-gray-500 border-sky-500 min-h-1/10 overflow-y-auto bg-white shadow-lg'
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
           isdragging={snapshot.isDragging}
         >
-          <div ref={myRef} key={order.id + index + 'order'} className='flex'>
+          <div ref={myRef} key={order.id + index + 'order'} className='flex flex-col'>
             {order.name}
-            {/* <div className='max-h-20 overflow-auto px-4'>
+            <div className='max-h-30 overflow-auto 5-5'>
               {order.items.map((item, i) => <Item key={index+i} item={item} />)}
-            </div> */}
+            </div>
           </div>
 
         </div>
@@ -46,5 +46,3 @@ const Order = ({k, order, index}) => {
 }
 
 export default Order;
-
-//TODO: Add Strike through for items that have been created already
