@@ -11,3 +11,5 @@ db
     console.log(err);
     return new Error(err);
   });
+
+module.exports = db;
