@@ -33,13 +33,27 @@ const initialData = {
       items: [
         'sprite', 'chicken', 'chocolate'
       ]
+    },
+    'order-6': {
+      id: 'order-6',
+      name: 'THIS IS JUST A STRING, order-6 chickeny',
+      items: [
+        'yikes '
+      ]
+    },
+    'order-7': {
+      id: 'order-7',
+      name: 'order7 b making me Koo Koo',
+      items: [
+        'yikes '
+      ]
     }
   },
   columns: {
     'column-1': {
       id: 'column-1',
       title: 'To Do',
-      orderIds: ['order-1', 'order-2', 'order-4', 'order-5']
+      orderIds: ['order-1', 'order-2', 'order-4', 'order-5', 'order-6', 'order-7']
     },
     'column-2': {
       id: 'column-2',
