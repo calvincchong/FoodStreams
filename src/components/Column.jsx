@@ -29,7 +29,7 @@ const Column = ({column, orders, index}) => {
       <div className='2xl flex flex-row justify-center'>
         <div className='Column-title text-l pt-2'>{column.title}</div>
       </div>
-      <Droppable key={column.id} droppableId={column.id} index={index}>
+      <Droppable key={column.id} droppableId={column.id} index={index} direction='vertical'>
         {(provided) => (
           <div className='OrderList py-2 grow min-h-1/10' ref={provided.innerRef} {...provided.droppableProps}>
             {/* <div> */}
