@@ -25,13 +25,13 @@ const Column = ({column, orders, index}) => {
 
 
   return (
-    <div key={column.id} className='Container mx-2 my-2 border-2 border-sky-500 flex flex-col min-w-200 overflow-y'>
+    <div key={column.id} className='Container mx-2 my-2 border-2 border-sky-500 flex flex-col min-w-400 max-w-400 overflow-y'>
       <div className='2xl flex flex-row justify-center'>
-        <div className='Column-title text-xl pt-2'>{column.title}</div>
+        <div className='Column-title text-l pt-2'>{column.title}</div>
       </div>
       <Droppable key={column.id} droppableId={column.id} index={index}>
         {(provided) => (
-          <div className='OrderList py-2' ref={provided.innerRef} {...provided.droppableProps}>
+          <div className='OrderList py-2 grow min-h-1/10' ref={provided.innerRef} {...provided.droppableProps}>
             {/* <div> */}
               {orders.map((order, index)=>
                 <Order key={order.id} order={order} index={index} /> )}
