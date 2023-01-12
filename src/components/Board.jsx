@@ -55,7 +55,7 @@ const Board = ({props}) => {
     const column = data.columns[source.droppableId];
     console.log('finding the column in the data', column);
     const newOrderIds = Array.from(column.orderIds);
-    console.log('this is new OrderIds from new array', newOrderIds);
+    console.log('this is new OrderIds from new array using array From', newOrderIds);
     newOrderIds.splice(source.index, 1);
     console.log('after splice', newOrderIds);
     newOrderIds.splice(destination.index, 0, draggableId);
@@ -85,13 +85,13 @@ const Board = ({props}) => {
       <h2> Order Board</h2>
       <div>It is {isConnected} that we are connected.</div>
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="board-canvas flex flex-row min-h-8/10">
+        <div className="AllColumns board-canvas flex flex-row min-h-8/10">
 
           {data.columnOrder.map((columnId, index) => {
             const column = data.columns[columnId];
             const orders = column.orderIds.map(taskId => data.orders[taskId]);
 
-            return <Column className='' column={column} orders={orders} index={index}/>
+            return <Column key={column.id} column={column} orders={orders} index={index}/>
           })};
 
         </div>
