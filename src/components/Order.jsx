@@ -21,9 +21,11 @@ const Order = ({k, order, index}) => {
       return null;
   }
 
+  // console.log('what is the order id when rendering', order, order.id);
+  // console.log('what is k', k);
   return(
     <div>
-    <Draggable key={index} draggableId={order.id} index={index}>
+    <Draggable key={index} draggableId={order.id.toString()} index={index}>
       {(provided, snapshot) => (
         <div key={index} className='mx-3 my-3 border border-gray-500 border-sky-500 min-h-1/10 overflow-y-auto bg-white shadow-lg'
           {...provided.draggableProps}

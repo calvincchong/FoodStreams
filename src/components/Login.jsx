@@ -4,14 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import io from 'socket.io-client';
 import axios from 'axios';
 
-const Login = ({props}) => {
+const Login = ({ props }) => {
   const [username, setUserName] = useState('');
   const navigate = useNavigate();
 
   const handleLoginClick = (e) => {
     e.preventDefault();
-    localStorage.setItem('userId', username);
-    setUserName('');
+    // localStorage.setItem('userId', username);
+    // setUserName('');
     navigate('/board')
   };
 

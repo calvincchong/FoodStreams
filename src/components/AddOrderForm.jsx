@@ -9,18 +9,14 @@ import Notifications from './Notifications.jsx';
 
 // components
 
-const App = ({props}) => {
+const AddOrderForm = ({props}) => {
   // const [username, setUsername] = useState('')
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<Board />} />
-        <Route path='board' element={<Login />} />
-        <Route path='notifications' element={<Notifications />} />
-      </Routes>
-    </BrowserRouter>
+   <>
+    Form should be here.
+   </>
   );
 }
 
-export default App;
+export default AddOrderForm;

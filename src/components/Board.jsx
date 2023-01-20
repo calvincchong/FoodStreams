@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { DragDropContext } from '@hello-pangea/dnd';
@@ -6,30 +7,74 @@ import axios from 'axios';
 import initialData from '../../fixtures/Orders.js';
 import Column from './Column.jsx';
 
-const Board = ({props}) => {
+// import successGif from '../../fixtures/assets/1_1VZUa3mn3569l3ePzq3piA.gif';
+var socket = io('http://localhost:9000');
+
+const Board = ({ username }) => {
   const [isConnected, setIsConnected] = useState(false);
   const [data, setData] = useState(initialData);
+  const [isAnimate, setIsAnimate] = useState(false);
+  const [dbOrders, setDbOrders] = useState('');
+  const [dbColumns, setDbColumns] = useState('');
+  const [showAddOrder, setShowAddOrder] = useState(false);
 
-  // useEffect(() => {
-  //   const socket = io('http://localhost:9000'); // url of the server is used to create socket
-  //   // when connected
-  //   socket.on('connect', (res) => {
-  //     setIsConnected('true');
-  //   });
+  useEffect(() => {
+    // url of the server is used to create socket
+    // when connected
+    socket.on('connect', (res) => {
+      setIsConnected('true');
 
-  //   socket.on('time', (time) => {
-  //     setIsConnected(time);
-  //   });
+      socket.emit("getAllOrders", {});
+      socket.emit("getColumns", {});
 
-  //   // use await to fetch dots
+    });
 
-  //   socket.on('disconnect', () => {
-  //     setIsConnected('Disconnected from Server');
-  //   });
-  // }, []);
+    socket.on('time', (time) => {
+      setIsConnected(time);
+    });
 
-  const onDragEnd = (result) => {
-    console.log(result);
+    // use await to fetch dots
+
+    socket.on('disconnect', () => {
+      setIsConnected('Disconnected from Server');
+    });
+
+    socket.on('allData', (result) => {
+      // console.log(result);
+      // const obj = Object.assign({}, result);
+      const obj = {}
+
+      result.forEach(order => {
+        obj[order.id] = order;
+      });
+      // console.log(obj);
+      // console.log('as int', obj[1]);
+      // console.log('num as string', obj['1']);
+      console.log(obj);
+      setDbOrders(obj);
+    });
+
+    socket.on('allColumns', (result) => {
+      console.log('this is the columns', result);
+      // const obj = Object.assign({}, result);
+      const obj = {}
+
+      result.forEach(column => {
+        obj[column.id] = column;
+      });
+      console.log('this is the columns', obj);
+      // console.log('as int', obj[0]);
+      // console.log('num as string', obj['0']);
+      // console.log(typeof obj);
+      setDbColumns(obj);
+      // console.log('afterdbColumn', dbColumns)
+    });
+
+  }, []);
+
+
+  const onDragEnd2 = (result) => {
+    // console.log(result);
     const { destination, source, draggableId } = result;
     console.log('what is the destination', destination);
     console.log('source', source);
@@ -110,21 +155,137 @@ const Board = ({props}) => {
     console.log('this is the new state', newDataState);
 
     setData(newDataState);
+    setIsAnimate(true);
+    setTimeout(() => {
+      if (isAnimate) {
+        setIsAnimate(false);
+      }
+    }, 2000)
     return;
 
   };
 
+  const onDragEnd = (result) => {
+    // console.log(result);
+    const { destination, source, draggableId } = result;
+    console.log('what is the destination', destination);
+    console.log('source', source);
+    console.log('draggableId', draggableId);
+    console.log('these are dbcolumns', dbColumns)
+
+    // find start
+    // find end
+    const startColumn = dbColumns[source.droppableId];
+    const endColumn = dbColumns[destination.droppableId]; // store reference to column that we finish in.
+    // if start column and finish column are the same then we con continue to use the same logic that we used before.
+      // console.log('finding the column in the data', column);
+      console.log(startColumn)
+
+    // start and end index
+    const startIndex = source.index;
+    const endIndex = destination.index;
+
+    if (startColumn === endColumn) {
+      //TODO: change positions
+      const reOrderedColumn = startColumn.orderids.slice();
+      console.log(reOrderedColumn);
+      reOrderedColumn.splice(startIndex, 1);
+        // console.log('after splice', newOrderIds);
+      reOrderedColumn.splice(destination.index, 0, draggableId);
+      console.log('original, end', startColumn,reOrderedColumn)
+
+      setDbColumns({
+        ...dbColumns,
+        [endColumn]: reOrderedColumn
+      })
+
+      // change order
+      socket.emit('changeOrder', {
+        columnId: endColumn.id,
+        reOrderedColumn: reOrderedColumn
+      });
+
+      // return;
+      return;
+    }
+
+    // console.log('this is the start & end index', startIndex, endIndex);
+
+    // socket.emit('changeLocations', {
+    //   destination: destination,
+    //   source: source,
+    //   draggableId: draggableId
+    // })
+
+    // Outer condition is if the start != end column
+      // identify start column, starrt index ___ end column, and end index.
+      // make copies of the start and end columns
+      // remove the dragged item from the copied start column,
+      // add dragged item into the copied end column
+      // socket emit change locations:
+    if (startColumn != endColumn) {
+      const reOrderedStartColumn = startColumn.orderids.slice();
+      const reOrderedEndColumn = endColumn.orderids.slice();
+
+      reOrderedStartColumn.splice(startIndex, 1)
+      reOrderedEndColumn.splice(endIndex, 0, draggableId)
+
+      console.log(reOrderedEndColumn)
+
+      socket.emit('draggedToNewColumn', {
+        startColumnId: startColumn.id,
+        endColumnId: endColumn.id,
+        reOrderedStartColumn: reOrderedStartColumn,
+        reOrderedEndColumn: reOrderedEndColumn
+      });
+
+      setIsAnimate(true);
+      setTimeout(() => {
+        if (isAnimate) {
+          setIsAnimate(false);
+        }
+      }, 2000)
+    }
+
+  }
+
+
+  const images = [
+    'https://media0.giphy.com/media/DyQrKMpqkAhNHZ1iWe/200w.webp?cid=ecf05e47y6e00hdcxnwnwrb2i102ho0ehhqrpk81ottd9rwu&rid=200w.webp&ct=g',
+    'https://media1.giphy.com/media/RJzv5gG13bFsER317k/giphy.gif?cid=ecf05e470qguipp3vg6v0b211tc12vn8zlltauz8zuhyr4yp&rid=giphy.gif&ct=g',
+    'https://media4.giphy.com/media/lgcUUCXgC8mEo/giphy.gif?cid=ecf05e470tw4xirzby1awx7b2hxxb31kqgpaajx53iincnxo&rid=giphy.gif&ct=g',
+    'https://media2.giphy.com/media/7kn27lnYSAE9O/giphy.gif?cid=ecf05e47kx3hfb1c5611mj3w77y2f4nlpr634x7wa235lm33&rid=giphy.gif&ct=g'
+  ]
+
+  let successImage = images[Math.floor(Math.random() * 3)];
+
+  let animation = isAnimate ? <div className='fixed flex z-30 flex-col items-center space-x-2 justify-center bg-black/50 backdrop-blur-sm w-full h-full left-0 top-0 text-neutral-800'
+                                   onClick={() => {setIsAnimate(false)}}><div><img src={`${successImage}`} /></div></div> : <></>;
+
   return (
-    <div className="board-main-content flex flex-col min-h-8/10">
+    <>
+   {(dbColumns && dbOrders) && <div className="board-main-content flex flex-col min-h-8/10">
       <div className="board-header">This is on top</div>
       <h2> Order Board</h2>
       <div>It is {isConnected} that we are connected.</div>
+      {animation}
       <DragDropContext onDragEnd={onDragEnd}>
         <div className="AllColumns board-canvas flex flex-row min-h-8/10">
 
           {data.columnOrder.map((columnId, index) => {
-            const column = data.columns[columnId];
-            const orders = column.orderIds.map(taskId => data.orders[taskId]);
+            // console.log('what is columnId', columnId, dbColumns);
+            console.log('how does dbOrders look', columnId, dbOrders);
+            // const column = data.columns[columnId];
+            const column = dbColumns[columnId];
+            const orders = column.orderids.map(taskId => {
+              // console.log(taskId);
+              taskId = taskId.toString();
+              // return data.orders[taskId]
+              // console.log('what is dbOrders', dbOrders);
+              return dbOrders[taskId];
+            });
+            // console.log('after orders map', index, orders);
+            // console.log('what is the strucutre of the orders being passed in', orders);
 
             return <Column key={column.id} column={column} orders={orders} index={index}/>
           })};
@@ -132,36 +293,9 @@ const Board = ({props}) => {
         </div>
       </DragDropContext>
 
-    </div>
+    </div>}
+    </>
   );
 }
 
 export default Board;
-
-
-/**
- * <div className='pending-wrapper basis-1/3'>
-          <h3>Pending</h3>
-          <div className='ko-list flex-col  min-h-8/10'>
-            <div className='listWrapper'>
-            </div>
-          </div>
-        </div>
-
-        <div className='working-wrapper flex-col min-h-8/10 basis-1/3'>
-          <h2 className='3xl'>Working On</h2>
-          <div className="working-card-container border-2  border-sky-500 min-h-full">
-            <div className="working-cards  min-h-full">
-              TEST CONTENT
-            </div>
-          </div>
-        </div>
-
-        <div className='working-wrapper basis-1/3'>
-          <div className="ko-list flex-col basis-1/3 min-h-8/10">
-            <div className="listWrapper border ">
-`              <h2>Completed</h2>
-`            </div>
-          </div>
-        </div>
- */

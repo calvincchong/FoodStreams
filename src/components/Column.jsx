@@ -23,6 +23,7 @@ const Column = ({column, orders, index}) => {
       return null;
   }
 
+  // console.log('inside column why dont orders work', orders, index);
 
   return (
     <div key={column.id} className='Container mx-2 my-2 border-2 border-sky-500 flex flex-col min-w-400 max-w-400 overflow-y'>
@@ -33,8 +34,11 @@ const Column = ({column, orders, index}) => {
         {(provided) => (
           <div className='OrderList py-2 grow min-h-1/10' ref={provided.innerRef} {...provided.droppableProps}>
             {/* <div> */}
-              {orders.map((order, index)=>
-                <Order key={order.id} order={order} index={index} /> )}
+              {orders.map((order, index)=> {
+                // console.log('inside column, first index, then orders', index,  orders);
+                return (<Order key={order.id} order={order} index={index} />)
+              }
+                 )}
             {/* </div> */}
             {provided.placeholder}
           </div>
