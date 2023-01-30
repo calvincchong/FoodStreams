@@ -140,9 +140,38 @@ io.on('connection', (socket) => {
       .catch(err => new Error(err))
   })
 
+  socket.on('newOrder', async (info) => {
+    console.log('breakdown in socket', info.name, info.phone, info.items)
+    // const values = [info.name, info.phone, info.items];
+    const values = [info.name, info.phone];
+
+    //TODO: pool query the total number of items need
+    // query to add items into the list
+    // query to take newly added item and then post to the second table of columns;
+    // get the table and alter:
+
+    const addedItem = await pool.query(`INSERT INTO orders(name, phone, items) VALUES ($1, $2, ARRAY ['chiggen', 'hard data :(', 'need new orm']) RETURNING id`, values);
+    console.log(addedItem)
+    const rowId = addedItem.rows[0].id;
+    const columnArray = await pool.query(`SELECT orderids from columns where id = 'column-1'`);
+    console.log('result from first query', columnArray);
+    console.log(columnArray.rows[0].orderids);
+    const newArray = columnArray.rows[0].orderids.slice();
+    newArray.unshift(rowId)
+    console.log('added new ARray', newArray);
+    const values2 = ['column-1', newArray]
+    const alterOrders = await pool.query(`UPDATE columns SET orderids = $2 WHERE id = $1 RETURNING *`, values2);
+    console.log('this is altered orders', alterOrders);
+    const allColumns = await pool.query(`select * from columns`);
+    const dataToSend = allColumns.rows;
+    console.log('what is the data to send', allColumns);
+    console.log('what is the data to send', allColumns.rows);
+    socket.emit('allColumns', dataToSend);
+    socket.broadcast.emit('allColumns', dataToSend);
+
+  })
+
 });
-
-
 
 io.on('connection_error', (err) => {
   console.log(err.req);

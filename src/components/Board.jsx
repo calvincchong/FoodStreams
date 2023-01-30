@@ -6,6 +6,9 @@ import io from 'socket.io-client';
 import axios from 'axios';
 import initialData from '../../fixtures/Orders.js';
 import Column from './Column.jsx';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import AddOrderForm from './AddOrderForm.jsx'
 
 // import successGif from '../../fixtures/assets/1_1VZUa3mn3569l3ePzq3piA.gif';
 var socket = io('http://localhost:9000');
@@ -17,6 +20,7 @@ const Board = ({ username }) => {
   const [dbOrders, setDbOrders] = useState('');
   const [dbColumns, setDbColumns] = useState('');
   const [showAddOrder, setShowAddOrder] = useState(false);
+  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
     // url of the server is used to create socket
@@ -194,10 +198,10 @@ const Board = ({ username }) => {
       reOrderedColumn.splice(destination.index, 0, draggableId);
       console.log('original, end', startColumn,reOrderedColumn)
 
-      setDbColumns({
-        ...dbColumns,
-        [endColumn]: reOrderedColumn
-      })
+      // setDbColumns({
+      //   ...dbColumns,
+      //   [endColumn]: reOrderedColumn
+      // })
 
       // change order
       socket.emit('changeOrder', {
@@ -249,6 +253,12 @@ const Board = ({ username }) => {
 
   }
 
+  const submitOrder = (orderDetails) => {
+    console.log('client now sending order to socket', orderDetails)
+    // console.log(dbColumns[column-1]);
+    socket.emit('newOrder', orderDetails);
+  };
+
 
   const images = [
     'https://media0.giphy.com/media/DyQrKMpqkAhNHZ1iWe/200w.webp?cid=ecf05e47y6e00hdcxnwnwrb2i102ho0ehhqrpk81ottd9rwu&rid=200w.webp&ct=g',
@@ -262,12 +272,24 @@ const Board = ({ username }) => {
   let animation = isAnimate ? <div className='fixed flex z-30 flex-col items-center space-x-2 justify-center bg-black/50 backdrop-blur-sm w-full h-full left-0 top-0 text-neutral-800'
                                    onClick={() => {setIsAnimate(false)}}><div><img src={`${successImage}`} /></div></div> : <></>;
 
+  let orderForm = showForm ? <AddOrderForm setShowForm={setShowForm} submitOrder={submitOrder}/> : <></>;
+
+  console.log('is showform true', showForm)
+
   return (
     <>
    {(dbColumns && dbOrders) && <div className="board-main-content flex flex-col min-h-8/10">
-      <div className="board-header">This is on top</div>
-      <h2> Order Board</h2>
+      {/* <div className="board-header">This is on top</div> */}
+      {/* <h2> Order Board</h2> */}
+      <Button onClick={() => {}}>
+        Order Board
+      </Button>
       <div>It is {isConnected} that we are connected.</div>
+      <Button onClick={() => {
+        setShowForm(true)}}>
+        Add Order
+      </Button>
+      {orderForm}
       {animation}
       <DragDropContext onDragEnd={onDragEnd}>
         <div className="AllColumns board-canvas flex flex-row min-h-8/10">
@@ -288,11 +310,9 @@ const Board = ({ username }) => {
             // console.log('what is the strucutre of the orders being passed in', orders);
 
             return <Column key={column.id} column={column} orders={orders} index={index}/>
-          })};
-
+          })}
         </div>
       </DragDropContext>
-
     </div>}
     </>
   );
