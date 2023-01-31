@@ -172,10 +172,7 @@ const Board = ({ username }) => {
   const onDragEnd = (result) => {
     // console.log(result);
     const { destination, source, draggableId } = result;
-    console.log('what is the destination', destination);
-    console.log('source', source);
-    console.log('draggableId', draggableId);
-    console.log('these are dbcolumns', dbColumns)
+    // console.log('what is the destination', destination);  console.log('source', source); console.log('draggableId', draggableId); console.log('these are dbcolumns', dbColumns)
 
     // find start
     // find end
@@ -250,15 +247,13 @@ const Board = ({ username }) => {
         }
       }, 2000)
     }
-
   }
 
   const submitOrder = (orderDetails) => {
     console.log('client now sending order to socket', orderDetails)
-    // console.log(dbColumns[column-1]);
+    console.log(dbColumns[column-1]);
     socket.emit('newOrder', orderDetails);
   };
-
 
   const images = [
     'https://media0.giphy.com/media/DyQrKMpqkAhNHZ1iWe/200w.webp?cid=ecf05e47y6e00hdcxnwnwrb2i102ho0ehhqrpk81ottd9rwu&rid=200w.webp&ct=g',
@@ -278,7 +273,7 @@ const Board = ({ username }) => {
 
   return (
     <>
-   {(dbColumns && dbOrders) && <div className="board-main-content flex flex-col min-h-8/10">
+   {(dbColumns && dbOrders) && <div className="board-main-content flex flex-col min-h-8/10 bg-slate-600">
       {/* <div className="board-header">This is on top</div> */}
       {/* <h2> Order Board</h2> */}
       <Button onClick={() => {}}>
@@ -300,15 +295,10 @@ const Board = ({ username }) => {
             // const column = data.columns[columnId];
             const column = dbColumns[columnId];
             const orders = column.orderids.map(taskId => {
-              // console.log(taskId);
               taskId = taskId.toString();
-              // return data.orders[taskId]
-              // console.log('what is dbOrders', dbOrders);
               return dbOrders[taskId];
             });
-            // console.log('after orders map', index, orders);
-            // console.log('what is the strucutre of the orders being passed in', orders);
-
+            console.log('can we receive the orders', orders);
             return <Column key={column.id} column={column} orders={orders} index={index}/>
           })}
         </div>

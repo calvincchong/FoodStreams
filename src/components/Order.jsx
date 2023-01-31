@@ -8,24 +8,22 @@ const Order = ({k, order, index}) => {
   const myRef = useRef(null);
   const [ enabled, setEnabled ] = React.useState(false);
 
-  useEffect(() => {
-    const animation = requestAnimationFrame(() => setEnabled(true));
+  // useEffect(() => {
+  //   const animation = requestAnimationFrame(() => setEnabled(true));
 
-    return () => {
-       cancelAnimationFrame(animation);
-       setEnabled(false);
-    };
-  }, []);
+  //   return () => {
+  //      cancelAnimationFrame(animation);
+  //      setEnabled(false);
+  //   };
+  // }, []);
 
-  if (!enabled) {
-      return null;
-  }
+  // if (!enabled) {
+  //     return null;
+  // }
 
-  // console.log('what is the order id when rendering', order, order.id);
-  // console.log('what is k', k);
   return(
     <div>
-    <Draggable key={index} draggableId={order.id.toString()} index={index}>
+    {order && <Draggable key={index} draggableId={order.id.toString()} index={index}>
       {(provided, snapshot) => (
         <div key={index} className='mx-3 my-3 border border-gray-500 border-sky-500 min-h-1/10 overflow-y-auto bg-white shadow-lg'
           {...provided.draggableProps}
@@ -34,7 +32,7 @@ const Order = ({k, order, index}) => {
           isdragging={snapshot.isDragging}
         >
           <div ref={myRef} key={order.id + index + 'order'} className='flex flex-col'>
-            {order.name}
+            <div className="p-2"> {order.name} </div>
             <div className='max-h-30 overflow-auto 5-5'>
               {order.items.map((item, i) => <Item key={index+i} item={item} />)}
             </div>
@@ -42,7 +40,7 @@ const Order = ({k, order, index}) => {
 
         </div>
       )}
-    </Draggable>
+    </Draggable>}
     </div>
   )
 }

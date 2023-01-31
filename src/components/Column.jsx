@@ -22,11 +22,12 @@ const Column = ({column, orders, index}) => {
   if (!enabled) {
       return null;
   }
-
+  console.log('after submitting orders,', orders)
   // console.log('inside column why dont orders work', orders, index);
 
   return (
-    <div key={column.id} className='Container mx-2 my-2 border-2 border-sky-500 flex flex-col min-w-400 max-w-400 overflow-y'>
+    <div key={column.id} className='Container mx-2 my-2 border-2 border-sky-500 flex flex-col min-w-400 max-w-400 overflow-y bg-white/50'>
+    {orders && <>
       <div className='2xl flex flex-row justify-center'>
         <div className='Column-title text-l pt-2'>{column.title}</div>
       </div>
@@ -44,6 +45,7 @@ const Column = ({column, orders, index}) => {
           </div>
         )}
       </Droppable>
+      </>}
     </div>
   )
 }
