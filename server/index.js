@@ -150,25 +150,41 @@ io.on('connection', (socket) => {
     // query to take newly added item and then post to the second table of columns;
     // get the table and alter:
 
-    const addedItem = await pool.query(`INSERT INTO orders(name, phone, items) VALUES ($1, $2, ARRAY ['chiggen', 'hard data :(', 'need new orm']) RETURNING id`, values);
-    console.log(addedItem)
+    const addedItem = await pool.query(`INSERT INTO orders(name, phone, items) VALUES ($1, $2, ARRAY ['Burger with beer', 'soda can', 'sprite']) RETURNING id`, values);
+    pool.query(`select * from orders`)
+      .then(result => {
+        console.log('query after getAllOrders', result.rows);
+        socket.broadcast.emit('allData', result.rows);
+        socket.emit('allData', result.rows);
+        return results.rows;
+      })
+      .catch(error => {
+        return new Error(error);
+      });
+    // need to send back all of the items to the client with an emit:
+    // console.log(addedItem)
     const rowId = addedItem.rows[0].id;
     const columnArray = await pool.query(`SELECT orderids from columns where id = 'column-1'`);
-    console.log('result from first query', columnArray);
-    console.log(columnArray.rows[0].orderids);
+    // console.log('result from first query', columnArray);
+    // console.log(columnArray.rows[0].orderids);
     const newArray = columnArray.rows[0].orderids.slice();
     newArray.unshift(rowId)
-    console.log('added new ARray', newArray);
+
+
+
+
+    // console.log('added new ARray', newArray);
     const values2 = ['column-1', newArray]
     const alterOrders = await pool.query(`UPDATE columns SET orderids = $2 WHERE id = $1 RETURNING *`, values2);
-    console.log('this is altered orders', alterOrders);
+    // console.log('this is altered orders', alterOrders);
     const allColumns = await pool.query(`select * from columns`);
     const dataToSend = allColumns.rows;
-    console.log('what is the data to send', allColumns);
-    console.log('what is the data to send', allColumns.rows);
-    socket.emit('allColumns', dataToSend);
+    // console.log('what is the data to send', allColumns);
+    // console.log('what is the data to send', allColumns.rows);
+    console.log(`dataToSend socket is broadcasting data to everyone else ${dataToSend} `)
+    // socket.broadcast.emit('allColumns', dataToSend);
     socket.broadcast.emit('allColumns', dataToSend);
-
+ .  socket.emit('allColumns', dataToSend);
   })
 
 });

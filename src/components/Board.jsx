@@ -44,7 +44,7 @@ const Board = ({ username }) => {
     });
 
     socket.on('allData', (result) => {
-      // console.log(result);
+      console.log(`allData socket receive ${result}`);
       // const obj = Object.assign({}, result);
       const obj = {}
 
@@ -54,12 +54,13 @@ const Board = ({ username }) => {
       // console.log(obj);
       // console.log('as int', obj[1]);
       // console.log('num as string', obj['1']);
-      console.log(obj);
+      console.log('inside allData', obj);
       setDbOrders(obj);
     });
 
+    // attempt asynchronous code ?
     socket.on('allColumns', (result) => {
-      console.log('this is the columns', result);
+      console.log('this is the columns after receiving the data', result);
       // const obj = Object.assign({}, result);
       const obj = {}
 
@@ -75,6 +76,10 @@ const Board = ({ username }) => {
     });
 
   }, []);
+
+  useEffect(() => {
+
+  }, [dbOrders, dbColumns])
 
 
   const onDragEnd2 = (result) => {
@@ -251,7 +256,6 @@ const Board = ({ username }) => {
 
   const submitOrder = (orderDetails) => {
     console.log('client now sending order to socket', orderDetails)
-    console.log(dbColumns[column-1]);
     socket.emit('newOrder', orderDetails);
   };
 
@@ -269,7 +273,8 @@ const Board = ({ username }) => {
 
   let orderForm = showForm ? <AddOrderForm setShowForm={setShowForm} submitOrder={submitOrder}/> : <></>;
 
-  console.log('is showform true', showForm)
+  console.log('is "" :howform true', showForm)
+  const lol = "";
 
   return (
     <>
@@ -294,11 +299,16 @@ const Board = ({ username }) => {
             console.log('how does dbOrders look', columnId, dbOrders);
             // const column = data.columns[columnId];
             const column = dbColumns[columnId];
-            const orders = column.orderids.map(taskId => {
+            const orders = column.orderids.reduce((results, taskId) => {
               taskId = taskId.toString();
-              return dbOrders[taskId];
-            });
-            console.log('can we receive the orders', orders);
+              if (dbOrders[taskId]) {
+                results.push(dbOrders[taskId]);
+              }
+              return results;
+            },[]);
+            // console.log('can we receive the orders', orders);
+            // console.log({ column, index, orders })
+            // console.log(Column);
             return <Column key={column.id} column={column} orders={orders} index={index}/>
           })}
         </div>

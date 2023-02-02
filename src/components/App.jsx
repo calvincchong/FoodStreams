@@ -9,7 +9,7 @@ import Notifications from './Notifications.jsx';
 
 // components
 
-const App = ({props}) => {
+const App = () => {
   // const [username, setUsername] = useState('')
 
   return (
@@ -21,6 +21,6 @@ const App = ({props}) => {
       </Routes>
     </BrowserRouter>
   );
-}
+};
 
 export default App;

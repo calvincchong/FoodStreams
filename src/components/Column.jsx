@@ -6,12 +6,14 @@ import Order from './Order.jsx';
 
 // orders is an array of tasks that was mapped from the column list
 const Column = ({column, orders, index}) => {
+  console.log({ column, orders, index })
   const myRef = useRef(null);
 
   const [ enabled, setEnabled ] = React.useState(false);
 
   React.useEffect(() => {
     const animation = requestAnimationFrame(() => setEnabled(true));
+    console.log('useEffect is running')
 
     return () => {
        cancelAnimationFrame(animation);
@@ -22,7 +24,8 @@ const Column = ({column, orders, index}) => {
   if (!enabled) {
       return null;
   }
-  console.log('after submitting orders,', orders)
+
+  console.log('after submitting orders,', orders);
   // console.log('inside column why dont orders work', orders, index);
 
   return (
@@ -34,20 +37,21 @@ const Column = ({column, orders, index}) => {
       <Droppable key={column.id} droppableId={column.id} index={index} direction='vertical'>
         {(provided) => (
           <div className='OrderList py-2 grow min-h-1/10' ref={provided.innerRef} {...provided.droppableProps}>
-            {/* <div> */}
+            <div>
               {orders.map((order, index)=> {
-                // console.log('inside column, first index, then orders', index,  orders);
-                return (<Order key={order.id} order={order} index={index} />)
+                console.log('inside column, first index, then orders', index,  orders);
+                console.log('inside columsnz ordermapping1: individual order, then id ---->', order, order.id)
+                return (<Order key={order?.id} order={order} index={index} />)
               }
                  )}
-            {/* </div> */}
+            </div>
             {provided.placeholder}
           </div>
         )}
       </Droppable>
       </>}
     </div>
-  )
-}
+  );
+};
 
 export default Column;
