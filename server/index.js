@@ -208,14 +208,10 @@ io.on("connection", (socket) => {
 });
 
 io.on("connection_error", (err) => {
-  console.log(err.req);
-  console.log(err.code);
-  console.log(err.message);
-  console.log(err.context);
+  console.log(err.req, err.code, err.?message, error.?context);
 });
 
 app.get("/", (req, res) => {
-  console.log(req);
   res.json({
     message: "hello",
   });
