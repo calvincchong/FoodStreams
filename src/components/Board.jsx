@@ -6,7 +6,7 @@ import axios from "axios";
 import initialData from "../../fixtures/Orders.js";
 import Column from "./Column.jsx";
 import AddOrderForm from "./AddOrderForm.jsx";
-
+import IsConnected from "./IsConnected";
 // import successGif from '../../fixtures/assets/1_1VZUa3mn3569l3ePzq3piA.gif';
 var socket = io("http://localhost:9000");
 
@@ -238,10 +238,11 @@ const Board = ({ username }) => {
     <>
       {dbColumns && dbOrders && (
         <div className="board-main-content flex flex-col min-h-8/10 bg-slate-900">
-          <div className="flex flex-row justify-between  w-full mx-auto max-w-[1440px]">
+          <div className="flex flex-row justify-between pt-[2rem] w-full mx-auto max-w-[1440px]">
             <div className="text-slate-200">
               It is {isConnected} that we are connected.
             </div>
+            <IsConnected />
             <div>some other text that should be on the other side </div>
           </div>
           <button
