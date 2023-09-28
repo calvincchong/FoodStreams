@@ -3,10 +3,13 @@ import { useState, useEffect, useRef } from "react";
 
 const Item = ({ item }: { item: any }) => {
   return (
-    <div className="">
+    <div className="py-1 ">
       <label>
-        <input type="checkbox" />
-        <span className="right"> {item} </span>
+        <input
+          type="checkbox"
+          className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-orange-600"
+        />
+        <span className="right"> #QTY {item} </span>
       </label>
     </div>
   );
