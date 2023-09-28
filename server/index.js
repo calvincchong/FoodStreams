@@ -43,19 +43,16 @@ io.on("connection", (socket) => {
   console.log(`'${socket.id}' just connected`);
   socket.on("disconnect", (reason) => {
     socket.disconnect();
-    console.log(`A user has disconnected. ${socket.id}`);
   });
 
   socket.on("disconnect", () => {
     socket.disconnect();
-    console.log(`A user has disconnected.`);
   });
 
   socket.on("getAllOrders", (page) => {
     pool
       .query(`SELECT * from orders`)
       .then((result) => {
-        console.log("query after getAllOrders", result.rows);
         socket.emit("allData", result.rows);
         return results.rows;
       })
@@ -69,7 +66,6 @@ io.on("connection", (socket) => {
     pool
       .query(`SELECT * from columns`)
       .then((result) => {
-        console.log("Get All columns ", result.rows);
         socket.emit("allColumns", result.rows);
       })
       .catch((error) => {
@@ -78,7 +74,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("changeLocations", (info) => {
-    console.log("this is the info", info);
     pool
       .query(`SELECT * from columns`)
       .then((result) => {
@@ -91,10 +86,8 @@ io.on("connection", (socket) => {
   });
 
   socket.on("changeOrder", (info) => {
-    console.log("this is the info", info);
     const endColumnName = info.columnId;
     const reOrderedColumn = info.reOrderedColumn;
-    console.log("splitup", endColumnName, reOrderedColumn);
     const values = [endColumnName, reOrderedColumn];
 
     // reOrderedColumn = reOrderedColumn.toString();
@@ -107,7 +100,6 @@ io.on("connection", (socket) => {
         values
       )
       .then((result) => {
-        console.log("after update Columns", result.rows);
         // socket.emit('allColumns', result.rows);
         pool.query(`select * from columns`).then((result) => {
           socket.broadcast.emit("allColumns", result.rows);
@@ -120,7 +112,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("draggedToNewColumn", (info) => {
-    console.log("this is the info", info);
+    // console.log("this is the info", info);
     const startColumnId = info.startColumnId;
     const reOrderedStartColumn = info.reOrderedStartColumn;
     const endColumnName = info.endColumnId;
@@ -134,7 +126,7 @@ io.on("connection", (socket) => {
         valuesStartCol
       )
       .then((result) => {
-        console.log("after editing start col", result);
+        // console.log("after editing start col", result);
         pool
           .query(
             `UPDATE columns SET orderids = $2 WHERE id = $1 RETURNING *`,
@@ -152,7 +144,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("newOrder", async (info) => {
-    console.log("breakdown in socket", info.name, info.phone, info.items);
+    // console.log("breakdown in socket", info.name, info.phone, info.items);
     // const values = [info.name, info.phone, info.items];
     const values = [info.name, info.phone];
 
@@ -168,7 +160,7 @@ io.on("connection", (socket) => {
     pool
       .query(`select * from orders`)
       .then((result) => {
-        console.log("query after getAllOrders", result.rows);
+        // console.log("query after getAllOrders", result.rows);
         socket.broadcast.emit("allData", result.rows);
         socket.emit("allData", result.rows);
         return results.rows;
@@ -198,17 +190,13 @@ io.on("connection", (socket) => {
     const dataToSend = allColumns.rows;
     // console.log('what is the data to send', allColumns);
     // console.log('what is the data to send', allColumns.rows);
-    console.log(
-      `dataToSend socket is broadcasting data to everyone else ${dataToSend} `
-    );
-    // socket.broadcast.emit('allColumns', dataToSend);
     socket.broadcast.emit("allColumns", dataToSend);
     socket.emit("allColumns", dataToSend);
   });
 });
 
 io.on("connection_error", (err) => {
-  console.log(err.req, err.code, err.?message, error.?context);
+  console.log(err.req, err.code, err.message, err.context);
 });
 
 app.get("/", (req, res) => {
