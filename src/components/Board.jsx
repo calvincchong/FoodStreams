@@ -5,8 +5,6 @@ import io from "socket.io-client";
 import axios from "axios";
 import initialData from "../../fixtures/Orders.js";
 import Column from "./Column.jsx";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import AddOrderForm from "./AddOrderForm.jsx";
 
 // import successGif from '../../fixtures/assets/1_1VZUa3mn3569l3ePzq3piA.gif';
@@ -62,7 +60,7 @@ const Board = ({ username }) => {
     });
   }, []);
 
-  useEffect(() => {}, [dbOrders, dbColumns]);
+  // useEffect(() => {}, [dbOrders, dbColumns]);
 
   const onDragEnd2 = (result) => {
     // console.log(result);
@@ -78,7 +76,6 @@ const Board = ({ username }) => {
       destination.droppableId === source.droppableId &&
       destination.index === source.index
     ) {
-      console.log("card hasnt moved");
       return;
     }
 
@@ -111,8 +108,6 @@ const Board = ({ username }) => {
         },
       };
 
-      console.log("this is the new State", newState);
-
       setData(newState);
       return;
     }
@@ -140,8 +135,6 @@ const Board = ({ username }) => {
       },
     };
 
-    console.log("this is the new state", newDataState);
-
     setData(newDataState);
     setIsAnimate(true);
     setTimeout(() => {
@@ -165,9 +158,12 @@ const Board = ({ username }) => {
     if (startColumn === endColumn) {
       //TODO: change positions
       const reOrderedColumn = startColumn.orderids.slice();
+      console.log(reOrderedColumn, "before splice");
       reOrderedColumn.splice(startIndex, 1);
+      console.log(reOrderedColumn, "splice start index, remove one");
       // console.log('after splice', newOrderIds);
       reOrderedColumn.splice(destination.index, 0, draggableId);
+      console.log(reOrderedColumn, "insert current");
 
       // change order
       socket.emit("changeOrder", {
@@ -241,20 +237,24 @@ const Board = ({ username }) => {
   return (
     <>
       {dbColumns && dbOrders && (
-        <div className="board-main-content flex flex-col min-h-8/10 bg-slate-600">
-          <Button onClick={() => {}}>Order Board</Button>
-          <div>It is {isConnected} that we are connected.</div>
-          <Button
+        <div className="board-main-content flex flex-col min-h-8/10 bg-slate-900">
+          <div className="flex flex-row justify-between  w-full mx-auto max-w-[1440px]">
+            <div className="text-slate-200">
+              It is {isConnected} that we are connected.
+            </div>
+            <div>some other text that should be on the other side </div>
+          </div>
+          <button
             onClick={() => {
               setShowForm(true);
             }}
           >
             Add Order
-          </Button>
+          </button>
           {orderForm}
           {animation}
           <DragDropContext onDragEnd={onDragEnd}>
-            <div className="AllColumns board-canvas flex flex-row min-h-8/10">
+            <div className="AllColumns board-canvas flex flex-row min-h-8/10 mx-auto">
               {data.columnOrder.map((columnId, index) => {
                 // console.log('what is columnId', columnId, dbColumns);
                 console.log("how does dbOrders look", columnId, dbOrders);

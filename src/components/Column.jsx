@@ -42,17 +42,13 @@ const Column = ({ column, orders, index }) => {
           >
             {(provided) => (
               <div
-                className="OrderList py-2 grow min-h-1/10"
+                className="OrderList py-2  min-h-1/10"
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
-                <div>
-                  {orders.map((order, index) => {
-                    return (
-                      <Order key={order?.id} order={order} index={index} />
-                    );
-                  })}
-                </div>
+                {orders.map((order, index) => {
+                  return <Order key={order?.id} order={order} index={index} />;
+                })}
                 {provided.placeholder}
               </div>
             )}
