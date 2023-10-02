@@ -1,50 +1,49 @@
-import React from 'react';
-import { useState, useEffect, useRef } from 'react';
-import Item from './Item.jsx';
-import { Draggable } from '@hello-pangea/dnd';
+import React from "react";
+import { useState, useEffect, useRef } from "react";
+import Item from "./Item.tsx";
+import { Draggable } from "@hello-pangea/dnd";
+import OrderCard from "./OrderCard";
 // import { Draggable } from 'react-beautiful-dnd';
 
-const Order = ({k, order, index}) => {
+const Order = ({ k, order, index }) => {
   const myRef = useRef(null);
-  const [ enabled, setEnabled ] = React.useState(false);
+  const [enabled, setEnabled] = React.useState(false);
 
-  useEffect(() => {
-    const animation = requestAnimationFrame(() => setEnabled(true));
+  console.log(order, "in order component");
 
-    return () => {
-       cancelAnimationFrame(animation);
-       setEnabled(false);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const animation = requestAnimationFrame(() => setEnabled(true));
 
-  if (!enabled) {
-      return null;
-  }
+  //   return () => {
+  //      cancelAnimationFrame(animation);
+  //      setEnabled(false);
+  //   };
+  // }, []);
 
-  // console.log('what is the order id when rendering', order, order.id);
-  // console.log('what is k', k);
-  return(
-    <div>
-    <Draggable key={index} draggableId={order.id.toString()} index={index}>
-      {(provided, snapshot) => (
-        <div key={index} className='mx-3 my-3 border border-gray-500 border-sky-500 min-h-1/10 overflow-y-auto bg-white shadow-lg'
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          ref={provided.innerRef}
-          isdragging={snapshot.isDragging}
-        >
-          <div ref={myRef} key={order.id + index + 'order'} className='flex flex-col'>
-            {order.name}
-            <div className='max-h-30 overflow-auto 5-5'>
-              {order.items.map((item, i) => <Item key={index+i} item={item} />)}
+  // if (!enabled) {
+  //     return null;
+  // }
+
+  return (
+    <>
+      {order && (
+        <Draggable key={index} draggableId={order.id.toString()} index={index}>
+          {(provided, snapshot) => (
+            <div
+              key={index}
+              className="mx-3 my-3 rounded border border-gray-500 border-sky-500 min-h-1/10 overflow-y-auto bg-white shadow-sm"
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+              ref={provided.innerRef}
+              isdragging={snapshot.isDragging}
+            >
+              <OrderCard ref={myRef} order={order} />
             </div>
-          </div>
-
-        </div>
+          )}
+        </Draggable>
       )}
-    </Draggable>
-    </div>
-  )
-}
+    </>
+  );
+};
 
 export default Order;
