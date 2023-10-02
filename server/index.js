@@ -144,8 +144,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("newOrder", async (info) => {
-    // console.log("breakdown in socket", info.name, info.phone, info.items);
-    // const values = [info.name, info.phone, info.items];
     const values = [info.name, info.phone];
 
     //TODO: pool query the total number of items need
@@ -174,8 +172,7 @@ io.on("connection", (socket) => {
     const columnArray = await pool.query(
       `SELECT orderids from columns where id = 'column-1'`
     );
-    // console.log('result from first query', columnArray);
-    // console.log(columnArray.rows[0].orderids);
+
     const newArray = columnArray.rows[0].orderids.slice();
     newArray.unshift(rowId);
 
