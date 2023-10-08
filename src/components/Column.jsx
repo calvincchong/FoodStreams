@@ -42,7 +42,7 @@ const Column = ({ column, orders, index }) => {
           >
             {(provided) => (
               <div
-                className="OrderList py-2  min-h-1/10"
+                className="OrderList py-2 pb-24  min-h-1/10"
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >

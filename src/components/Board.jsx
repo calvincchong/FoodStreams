@@ -150,6 +150,11 @@ const Board = ({ username }) => {
     const { destination, source, draggableId } = result;
     // console.log('what is the destination', destination);  console.log('source', source); console.log('draggableId', draggableId); console.log('these are dbcolumns', dbColumns)
 
+    // Fix error where the destination is null (outside of the destination columns)
+    if (!destination) {
+      return;
+    }
+
     const startColumn = dbColumns[source.droppableId];
     const endColumn = dbColumns[destination.droppableId]; // store reference to column that we finish in.
     const startIndex = source.index;
@@ -158,12 +163,12 @@ const Board = ({ username }) => {
     if (startColumn === endColumn) {
       //TODO: change positions
       const reOrderedColumn = startColumn.orderids.slice();
-      console.log(reOrderedColumn, "before splice");
+      // console.log(reOrderedColumn, "before splice");
       reOrderedColumn.splice(startIndex, 1);
-      console.log(reOrderedColumn, "splice start index, remove one");
+      // console.log(reOrderedColumn, "splice start index, remove one");
       // console.log('after splice', newOrderIds);
       reOrderedColumn.splice(destination.index, 0, draggableId);
-      console.log(reOrderedColumn, "insert current");
+      // console.log(reOrderedColumn, "insert current");
 
       // change order
       socket.emit("changeOrder", {
@@ -238,12 +243,8 @@ const Board = ({ username }) => {
     <>
       {dbColumns && dbOrders && (
         <div className="board-main-content flex flex-col min-h-8/10 bg-slate-900">
-          <div className="flex flex-row justify-between pt-[2rem] w-full mx-auto max-w-[1440px]">
-            <div className="text-slate-200">
-              It is {isConnected} that we are connected.
-            </div>
+          <div className="flex flex-row justify-center pt-[2rem] w-full mx-auto max-w-[1440px]">
             <IsConnected />
-            <div>some other text that should be on the other side </div>
           </div>
           <button
             onClick={() => {
